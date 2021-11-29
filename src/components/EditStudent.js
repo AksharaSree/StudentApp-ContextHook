@@ -5,7 +5,6 @@ import { StudentContext } from "../App";
 function EditStudent() {
   
   let context = useContext(StudentContext);
-
   let [name, setName] = useState("");
   let [degree, setDegree] = useState("");
   let [dept, setDept] = useState("");
@@ -16,26 +15,29 @@ function EditStudent() {
   const params = useParams();
   let studentID = params.id;
 
-  //to get the data of specific ID
+  //to get the data of specific ID 
+  useEffect(() => {   
 
-  useEffect(() => {
-    if (studentID) {
-      getData();
-    }
-  }, []);
+    let getData = () => {
 
-  let getData = () => {
-    let data = context.students.filter(
-      (student) => student.id === parseInt(studentID)
-    );
-    console.log(data);
+      if (studentID) {
+        let data = context.students.filter(
+          (student) => student.id === parseInt(studentID)
+        );
+        console.log(data);
+  
+        setName(data[0].name);
+        setEmail(data[0].email);
+        setMobile(data[0].mobile);
+        setDegree(data[0].degree);
+        setDept(data[0].dept);
+      }
+    }; 
 
-    setName(data[0].name);
-    setEmail(data[0].email);
-    setMobile(data[0].mobile);
-    setDegree(data[0].degree);
-    setDept(data[0].dept);
-  };
+      getData();   
+  }, [context.students,studentID]);
+
+ 
 
   let saveHandler = () => {
     let index = context.students.findIndex(
